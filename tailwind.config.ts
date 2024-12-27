@@ -9,8 +9,17 @@ export default {
   theme: {
     extend: {
       colors: {
+        peach: '#ffcc99', // Customize the peach color code here
         background: "var(--background)",
         foreground: "var(--foreground)",
+      },
+      fontFamily: {
+        sans: ['Roboto', 'Arial', 'sans-serif'],
+        serif: ['Merriweather', 'serif'],
+      },
+      spacing: {
+        '128': '32rem',
+        '144': '36rem',
       },
     },
   },
