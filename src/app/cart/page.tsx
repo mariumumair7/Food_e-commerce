@@ -1,7 +1,8 @@
-"use client";
+'use client';
 
 import { useCart } from "../lib/cart-context"; 
 import Link from "next/link";
+import Image from "next/image"; // Import Image from next/image
 
 export default function CartPage() {
   const { cart, removeFromCart } = useCart(); 
@@ -32,10 +33,12 @@ export default function CartPage() {
                   className="flex justify-between items-center py-4 border-b border-gray-200"
                 >
                   <div className="flex items-center space-x-4">
-                    <img
+                    <Image
                       src={item.image} // Use the image link provided in the cart data
                       alt={item.name}
-                      className="w-16 h-16 object-cover rounded-md"
+                      width={64} // Set width (16 * 4 for consistency)
+                      height={64} // Set height (16 * 4 for consistency)
+                      className="object-cover rounded-md"
                     />
                     <div>
                       <h2 className="text-xl font-semibold text-gray-800">{item.name}</h2>

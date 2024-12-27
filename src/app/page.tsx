@@ -88,13 +88,6 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* Cart Link and Cart Count */}
-            <div className="text-center mt-6">
-                <Link href="/cart" className="bg-pink-400 text-black text-lg px-6 py-3 rounded-md hover:bg-pink-500 transition-colors">
-                    Go to Cart {cartCount > 0 && `(${cartCount})`}
-                </Link>
-            </div>
-
             {/* Dynamically pass the slug from the deal */}
             <CommentSection slug={deals[0].slug} />
         </>
