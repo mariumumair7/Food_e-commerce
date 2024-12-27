@@ -4,7 +4,6 @@ import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
 import Herosection from './components/herosection';
-import { useCart } from './lib/cart-context'; // Import the cart context
 import CommentSection from './components/commentSection';
 
 // Deals data
