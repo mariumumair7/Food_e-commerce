@@ -2,6 +2,7 @@
 
 import Head from 'next/head';
 import Link from 'next/link';
+import Image from 'next/image';
 import Herosection from './components/herosection';
 import { useCart } from './lib/cart-context'; // Import the cart context
 import CommentSection from './components/commentSection';
@@ -64,9 +65,11 @@ export default function Home() {
                             className="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 transform hover:scale-105"
                         >
                             <div className="relative">
-                                <img
+                                <Image
                                     src={deal.image}
                                     alt={deal.title}
+                                    width={600}
+                                    height={400}
                                     className="w-full h-72 object-cover rounded-t-lg"
                                 />
                                 <div className="absolute top-2 left-2 bg-pink-500 text-white px-4 py-2 rounded-full text-lg">
