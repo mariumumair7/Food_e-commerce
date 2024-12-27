@@ -54,19 +54,19 @@ export default function About() {
             <div className="bg-white p-6 shadow-lg rounded-lg hover:shadow-xl transition-shadow duration-300">
               <h3 className="text-xl font-semibold text-gray-800 mb-4">Quality Ingredients</h3>
               <p className="text-gray-600">
-                We only use fresh, high-quality ingredients to ensure every bite is as delicious as it is crispy.
+                We only use fresh high-quality ingredients to ensure every bite is as delicious as it is crispy
               </p>
             </div>
             <div className="bg-white p-6 shadow-lg rounded-lg hover:shadow-xl transition-shadow duration-300">
               <h3 className="text-xl font-semibold text-gray-800 mb-4">Customer First</h3>
               <p className="text-gray-600">
-                Your satisfaction is our priority! We focus on providing excellent service and an unforgettable experience.
+                Your satisfaction is our priority! We focus on providing excellent service and an unforgettable experience
               </p>
             </div>
             <div className="bg-white p-6 shadow-lg rounded-lg hover:shadow-xl transition-shadow duration-300">
               <h3 className="text-xl font-semibold text-gray-800 mb-4">Sustainability</h3>
               <p className="text-gray-600">
-                We're committed to sustainability, using eco-friendly packaging and minimizing food waste.
+                We are committed to sustainability using eco-friendly packaging and minimizing food waste
               </p>
             </div>
           </div>
@@ -76,7 +76,7 @@ export default function About() {
         <div className="mt-16 text-center">
           <h2 className="text-3xl font-semibold text-gray-800 mb-8">Get in Touch</h2>
           <p className="text-lg text-gray-600 mb-4">
-            Have any questions or want to place an order? We'd love to hear from you.
+            Have any questions or want to place an order? We would love to hear from you
           </p>
           <a
             href="mailto:info@crispyandcrunch.com"

@@ -7,7 +7,7 @@ interface Post {
   slug: string;
 }
 
-let posts: Post[] = []; // In-memory mock data for demonstration
+const posts: Post[] = []; // In-memory mock data for demonstration
 
 // Handle requests for specific post by slug
 export default function handler(req: NextApiRequest, res: NextApiResponse) {

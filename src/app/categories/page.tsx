@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
+import Image from "next/image"; // Importing Next.js Image component
 import { useCart } from "../lib/cart-context"; // Importing the cart context
 
 // Define the categories and food items
@@ -59,9 +60,11 @@ export default function FastFoodCategoriesPage() {
               className="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 transform hover:scale-105"
             >
               <div className="relative">
-                <img
+                <Image
                   src={item.image}
                   alt={item.name}
+                  width={500}
+                  height={400}
                   className="w-full h-72 object-cover rounded-t-lg"
                 />
                 <div className="absolute top-2 left-2 bg-pink-500 text-white px-4 py-2 rounded-full text-lg">

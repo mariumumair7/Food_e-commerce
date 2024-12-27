@@ -74,7 +74,7 @@ const ContactUs = () => {
             Contact Us
           </h1>
           <p className="text-center mb-6 text-gray-700">
-            Have a question or feedback? We'd love to hear from you!
+          Have a question or feedback? We&apos;d love to hear from you!
           </p>
 
           <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">

@@ -6,7 +6,7 @@ interface Comment {
   slug: string;
 }
 
-let comments: Comment[] = []; // This is just a mock data array for demonstration purposes
+const comments: Comment[] = []; // This is just a mock data array for demonstration purposes
 
 // GET request to fetch comments for a specific blog post
 export async function GET(request: Request) {

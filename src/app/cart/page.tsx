@@ -1,10 +1,10 @@
 "use client";
 
-import { useCart } from "../lib/cart-context"; // Import the useCart hook
+import { useCart } from "../lib/cart-context"; 
 import Link from "next/link";
 
 export default function CartPage() {
-  const { cart, removeFromCart } = useCart(); // Get the cart state and remove function
+  const { cart, removeFromCart } = useCart(); 
 
   // Calculate the total price
   const totalPrice = cart.reduce((total, item) => total + item.price, 0);
@@ -18,17 +18,22 @@ export default function CartPage() {
         {cart.length === 0 ? (
           <div className="text-center text-lg text-gray-600 py-6">
             <p>Your cart is empty.</p>
-            <Link href="/" className="text-blue-500 hover:underline">Go back to shop</Link>
+            <Link href="/" className="text-blue-500 hover:underline">
+              Go back to shop
+            </Link>
           </div>
         ) : (
           <>
             {/* List Cart Items */}
             <div className="space-y-4 px-6 pb-6">
               {cart.map((item) => (
-                <div key={item.id} className="flex justify-between items-center py-4 border-b border-gray-200">
+                <div
+                  key={item.id}
+                  className="flex justify-between items-center py-4 border-b border-gray-200"
+                >
                   <div className="flex items-center space-x-4">
                     <img
-                      src={item.image}
+                      src={item.image} // Use the image link provided in the cart data
                       alt={item.name}
                       className="w-16 h-16 object-cover rounded-md"
                     />
@@ -57,7 +62,10 @@ export default function CartPage() {
 
             {/* Checkout Button */}
             <div className="px-6 py-4 text-center">
-              <Link href="/checkout" className="bg-pink-500 text-white text-lg px-6 py-3 rounded-md hover:bg-pink-600 transition-colors">
+              <Link
+                href="/checkout"
+                className="bg-pink-500 text-white text-lg px-6 py-3 rounded-md hover:bg-pink-600 transition-colors"
+              >
                 Checkout
               </Link>
             </div>
