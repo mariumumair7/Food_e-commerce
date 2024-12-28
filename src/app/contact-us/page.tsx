@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Head from 'next/head';
+import React from 'react';
 
 const ContactUs = () => {
   const [name, setName] = useState('');
@@ -10,7 +11,7 @@ const ContactUs = () => {
   const [nameError, setNameError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [messageError, setMessageError] = useState('');
-  const [submissionStatus, setSubmissionStatus] = useState(null);
+  const [submissionStatus, setSubmissionStatus] = useState<string | null>(null);
 
   const validateForm = () => {
     let isValid = true;
@@ -40,7 +41,7 @@ const ContactUs = () => {
     return isValid;
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: React.FormEvent) => { // Added React.FormEvent
     event.preventDefault();
 
     if (!validateForm()) {
@@ -74,7 +75,7 @@ const ContactUs = () => {
             Contact Us
           </h1>
           <p className="text-center mb-6 text-gray-700">
-          Have a question or feedback? We&apos;d love to hear from you!
+          Have a question or feedback? We'd love to hear from you!
           </p>
 
           <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
