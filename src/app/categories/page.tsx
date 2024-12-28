@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
@@ -79,7 +77,7 @@ export default function FastFoodCategoriesPage() {
               <div className="p-4 bg-gray-100 flex justify-between items-center rounded-b-lg">
                 {/* Add to Cart Button */}
                 <button
-                  onClick={() => addToCart(item)} // Adding item to cart
+                  onClick={() => addToCart({ ...item, id: String(item.id) })} // Convert id to string
                   className="bg-pink-400 text-white text-lg px-4 py-2 rounded-md hover:bg-pink-500 transition-colors"
                 >
                   Add to Cart
