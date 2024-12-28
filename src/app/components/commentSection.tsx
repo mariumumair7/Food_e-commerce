@@ -1,98 +1,87 @@
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import CommentForm from './commentForm';
 
-const CommentSection = ({ slug }: { slug: string }) => {
-  const [comments, setComments] = useState([]);
-  const [newComment, setNewComment] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
+interface Comment {
+    _id: string;
+    name: string;
+    comment: string;
+    createdAt: string;
+    id: string;
+}
 
-  // Fetch comments when the page loads
-  useEffect(() => {
-    const fetchComments = async () => {
-      const query = `*[_type == "comment" && blog->slug.current == $slug]`;
-      const commentData = await client.fetch(query, { slug });
-      setComments(commentData);
+interface Props {
+    postId: string;
+    slug: string;
+}
+
+const CommentSection: React.FC<Props> = ({ postId, slug }) => {
+    const [comments, setComments] = useState<Comment[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+
+     const fetchComments = async () => {
+       console.log("Fetching comments with postID:", postId)
+        setLoading(true);
+        setError(null);
+
+        try {
+           const response = await fetch(`/api/comments?postId=${postId}`);
+            if (!response.ok) {
+               const message = await response.text()
+                console.error('Failed to fetch comments:', message);
+                throw new Error(`Failed to fetch comments: ${response.status} ${message}`);
+          }
+           const data = await response.json();
+           setComments(data);
+        } catch (error: any) {
+             console.error('Error fetching comments:', error);
+            setError(error.message || "Failed to fetch comments");
+        } finally {
+           setLoading(false);
+       }
     };
 
-    fetchComments();
-  }, [slug]);
 
-  const handleDelete = async (commentId: string) => {
-    try {
-      // Send delete request to backend
-      await fetch(`/api/comments/${commentId}`, {
-        method: 'DELETE',
-      });
 
-      // Remove the comment from the UI
-      setComments((prevComments) => prevComments.filter(comment => comment._id !== commentId));
-    } catch (error) {
-      console.error('Error deleting comment:', error);
+     useEffect(() => {
+          if(postId) fetchComments();
+      }, [postId]);
+
+    const handleCommentSubmitted = () => {
+         fetchComments()
     }
-  };
 
-  const handleCommentSubmit = async () => {
-    if (!newComment.trim()) return;
 
-    setIsSubmitting(true);
+     return (
+          <div className="mt-8">
+               <h3 className="text-xl font-semibold mb-4">Comments</h3>
 
-    try {
-      const mutation = {
-        _type: 'comment',
-        text: newComment,
-        blog: { _type: 'reference', _ref: slug },
-      };
+                {loading && <p className="text-gray-500">Loading Comments...</p>}
 
-      await client.create(mutation);
+               {error && <p className="text-red-500">Error: {error}</p>}
 
-      setComments((prev) => [...prev, mutation]);
-      setNewComment('');
-    } catch (error) {
-      console.error('Error submitting comment:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  return (
-    <div className="bg-white p-6 rounded-lg shadow-lg max-w-4xl mx-auto">
-      <h3 className="text-2xl font-semibold text-gray-800 mb-4">Comments</h3>
-
-      {comments.length === 0 ? (
-        <p className="text-gray-500">No comments yet. Be the first to comment!</p>
-      ) : (
-        <div className="space-y-4">
-          {comments.map((comment) => (
-            <div key={comment._id} className="bg-gray-50 p-4 rounded-md shadow-sm flex justify-between items-start">
-              <p className="text-lg text-gray-700">{comment.text}</p>
-              <button
-                onClick={() => handleDelete(comment._id)}
-                className="text-red-500 hover:text-red-700 font-semibold"
-              >
-                Delete
-              </button>
+               {!loading && !error && (
+                    comments.length > 0 ? (
+                       <ul className="space-y-4">
+                         {comments.map(comment => (
+                              <li key={comment._id} className="bg-white p-4 rounded-md shadow-sm">
+                                   <p className="font-medium">{comment.name} <span className="text-gray-500 text-sm">({new Date(comment.createdAt).toLocaleDateString()})</span></p>
+                                   <p className="text-gray-700">{comment.comment}</p>
+                              </li>
+                         ))}
+                    </ul>
+                    ) : (
+                        <p className="text-gray-500">No comments yet.</p>
+                    )
+                )}
+               <CommentForm
+                     slug={slug}
+                     postId={postId}
+                   onCommentSubmitted={handleCommentSubmitted}
+                 />
             </div>
-          ))}
-        </div>
-      )}
-
-      <div className="mt-6">
-        <textarea
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-          placeholder="Add a comment"
-          className="w-full p-4 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
-        />
-
-        <button
-          onClick={handleCommentSubmit}
-          disabled={isSubmitting}
-          className={`w-full mt-4 py-2 rounded-lg text-white ${isSubmitting ? 'bg-gray-400' : 'bg-pink-500 hover:bg-pink-600'} transition-colors`}
-        >
-          {isSubmitting ? 'Submitting...' : 'Submit'}
-        </button>
-      </div>
-    </div>
-  );
-};
+       );
+    };
 
 export default CommentSection;

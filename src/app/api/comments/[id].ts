@@ -5,16 +5,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === 'DELETE') {
     if (!id) {
-      return res.status(400).json({ message: "Comment id is required" });
+        console.log("Missing Comment ID in DELETE request");
+      return res.status(400).json({ message: "Comment ID is required" });
     }
 
     try {
-       //  Dummy Logic - Replace this with your actual logic
-      console.log(`Deleting item with ID: ${id}`);
+        //  Dummy Logic - Replace this with your actual logic
+         console.log(`Deleting item with ID: ${id}`);
       return res.status(200).json({ message: `Item with ID ${id} has been deleted` });
     } catch (error) {
-      console.error('Error deleting comment:', error);
-      return res.status(500).json({ message: "Error deleting comment" });
+       console.error('Error deleting comment:', error);
+        return res.status(500).json({ message: "Error deleting comment" });
     }
   }
 

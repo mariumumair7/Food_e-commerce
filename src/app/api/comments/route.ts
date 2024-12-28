@@ -1,50 +1,76 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 interface Comment {
-  id: number;
-  text: string;
-  slug: string;
+    _id: string;
+    name: string;
+    comment: string;
+    createdAt: string;
+   id: string; // Added id property for storing the Gmail id
 }
 
-const comments: Comment[] = []; // This is just a mock data array for demonstration purposes
+const commentsDb: Record<string, Comment[]> = {
+    'post1': [
+        { _id: 'comment1', name: 'test1', comment: 'testComment1', createdAt: new Date().toString(), id: 'test1@gmail.com' },
+        { _id: 'comment2', name: 'test2', comment: 'testComment2', createdAt: new Date().toString(), id: 'test2@gmail.com' },
+    ],
+    'post2': [
+        { _id: 'comment3', name: 'test1', comment: 'testComment1', createdAt: new Date().toString(), id: 'test1@gmail.com' },
+        { _id: 'comment4', name: 'test2', comment: 'testComment2', createdAt: new Date().toString(), id: 'test2@gmail.com' },
+    ],
+};
 
-// GET request to fetch comments for a specific blog post
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const slug = searchParams.get('slug'); // Get the slug from the query parameters
+export async function GET(req: NextRequest) {
+    try {
+        const url = new URL(req.url);
+        const postId = url.searchParams.get('postId');
 
-  if (!slug) {
-    return NextResponse.json({ message: 'Slug is required' }, { status: 400 });
-  }
+        if (!postId) {
+            console.log("Missing Post ID in GET request");
+           return NextResponse.json({ message: 'Post ID is required' }, { status: 400 });
+        }
 
-  const filteredComments = comments.filter(comment => comment.slug === slug);
-  return NextResponse.json(filteredComments);
-}
-
-// POST request to submit a new comment
-export async function POST(request: Request) {
-  try {
-    const { text, slug }: { text: string; slug: string } = await request.json();
-
-    if (!text || !slug) {
-      return NextResponse.json({ message: 'Text and slug are required' }, { status: 400 });
+        if (!commentsDb[postId]) {
+            console.log(`No comments found for postId: ${postId}`);
+            return NextResponse.json([], { status: 200 });
+        }
+        console.log(`Fetching comments for postId: ${postId}`);
+         return NextResponse.json(commentsDb[postId], { status: 200 });
+     } catch (error) {
+          console.error('Failed to fetch comments: ', error);
+        return NextResponse.json({ message: 'Failed to fetch comments' }, { status: 500 });
     }
+}
 
-    // Create a new comment object
-    const newComment: Comment = {
-      id: comments.length + 1,
-      text,
-      slug,
-    };
+export async function POST(req: NextRequest) {
+     try {
+          const body = await req.json();
+            console.log('Request Body received:', body);
+          const { postId, name, comment, id } = body; // De-structure new `id` property
 
-    // Save the new comment to the mock database
-    comments.push(newComment);
+          if (!postId || !name || !comment || !id) {
+              console.log("Missing required values in POST request: ", body);
+               return NextResponse.json({ message: 'Post ID, name, comment, and id are required' }, { status: 400 });
+          }
 
-    console.log("New comment added:", newComment); // Log the new comment for debugging
+         const newComment: Comment = {
+               _id: String(Date.now()),
+              name: name,
+              comment: comment,
+              createdAt: new Date().toString(),
+            id: id
+        };
 
-    return NextResponse.json(newComment, { status: 201 });
-  } catch (error) {
-    console.error('Error processing comment submission:', error);
-    return NextResponse.json({ message: 'Error submitting comment' }, { status: 500 });
-  }
+        if (commentsDb[postId]) {
+             commentsDb[postId].push(newComment);
+            console.log(`Successfully added comment for postId: ${postId}`);
+       } else {
+            commentsDb[postId] = [newComment];
+           console.log(`Creating new comment array for postId: ${postId}`);
+        }
+
+        return NextResponse.json(newComment, { status: 201 });
+   } catch (error) {
+         console.error('Failed to create comment: ', error);
+        return NextResponse.json({ message: 'Failed to create comment' }, { status: 500 });
+    }
 }
