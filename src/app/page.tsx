@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Herosection from './components/herosection';
 import CommentSection from './components/commentSection';
+import BlogList from ".//blog"
 
 // Deals data
 const deals = [
@@ -89,6 +90,8 @@ export default function Home() {
 
             {/* Dynamically pass the slug from the deal */}
             <CommentSection slug={deals[0].slug} />
+
+            <BlogList />
         </>
     );
 }

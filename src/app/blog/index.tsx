@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import client from '../sanity'; // Assuming you have set up sanity client
+import client from '../sanity'; 
 
 const BlogList = ({ posts }) => {
   return (

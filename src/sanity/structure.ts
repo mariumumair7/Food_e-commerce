@@ -1,15 +1,14 @@
-import type {StructureResolver} from 'sanity/structure'
+import { S } from '@sanity/desk-tool'; // Correct import for structure
+import { structureTool } from 'sanity/desk-tool'; // Make sure you are using the correct import for structureTool
 
-// https://www.sanity.io/docs/structure-builder-cheat-sheet
-export const structure: StructureResolver = (S) =>
-  S.list()
-    .title('Blog')
-    .items([
-      S.documentTypeListItem('post').title('Posts'),
-      S.documentTypeListItem('category').title('Categories'),
-      S.documentTypeListItem('author').title('Authors'),
-      S.divider(),
-      ...S.documentTypeListItems().filter(
-        (item) => item.getId() && !['post', 'category', 'author'].includes(item.getId()!),
-      ),
-    ])
+export const structure = S.list()
+  .title('Content')
+  .items([
+    // Define document types for your structure
+    S.listItem()
+      .title('Blog Posts')
+      .schemaType('post') // Assuming 'post' is a schema in your Sanity schema
+      .child(S.documentTypeList('post').title('All Blog Posts')),
+
+    // You can add more items to your structure here
+  ]);
