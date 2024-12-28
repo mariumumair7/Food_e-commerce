@@ -1,7 +1,6 @@
 // /pages/api/comments/[id].ts
 
 import { NextApiRequest, NextApiResponse } from 'next';
-import client from '../../sanity';  // Ensure client is properly imported
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;  // Get the comment ID from the query parameter

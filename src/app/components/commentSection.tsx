@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import client from '../sanity'; // Adjust path as needed
 
 const CommentSection = ({ slug }: { slug: string }) => {
   const [comments, setComments] = useState([]);

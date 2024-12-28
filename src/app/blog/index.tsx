@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import client from '../sanity'; 
 
 const BlogList = ({ posts }) => {
   return (
