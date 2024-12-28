@@ -1,5 +1,3 @@
-// /pages/api/comments/[id].ts
-
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -11,10 +9,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     try {
-      // Delete the comment from Sanity using its ID
-      await client.delete(id as string);  // Make sure this is a valid ID from your Sanity schema
-
-      return res.status(200).json({ message: "Comment deleted successfully" });
+       //  Dummy Logic - Replace this with your actual logic
+      console.log(`Deleting item with ID: ${id}`);
+      return res.status(200).json({ message: `Item with ID ${id} has been deleted` });
     } catch (error) {
       console.error('Error deleting comment:', error);
       return res.status(500).json({ message: "Error deleting comment" });
