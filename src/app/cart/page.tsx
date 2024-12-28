@@ -27,18 +27,7 @@ export default function CartPage() {
                   </div>
                 ) : (
                     <>
-                        {/* List Cart Items */}
-                       <div className="space-y-4 px-6 pb-6">
-                         {cart.map((item) => (
-                                 <CartItem
-                                   key={item.id}
-                                    item={item}
-                                  onRemove={removeFromCart}
-                                />
-                           ))}
-                      </div>
-
-
+                    
                       {/* Cart Total */}
                     <div className="px-6 py-4 bg-gray-100 flex justify-between items-center">
                          <span className="text-xl font-semibold text-gray-800">Total Price</span>
