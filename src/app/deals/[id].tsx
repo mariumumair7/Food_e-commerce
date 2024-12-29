@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation'; 
+import { useParams } from 'next/navigation';  // Correct hook for Next.js 15
 import axios from 'axios';
 
 interface Comment {
@@ -24,18 +24,20 @@ export default function DealDetail() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionMessage, setSubmissionMessage] = useState('');
-  
-  // Use useParams to get the dynamic id
-  const { id } = useParams();
+
+  // Use useParams to get the dynamic id from the URL
+  const { id } = useParams(); 
 
   useEffect(() => {
     if (!id) return;
 
     const fetchData = async () => {
       try {
+        // Fetch deal data based on the dynamic id
         const dealResponse = await axios.get<Deal>(`/api/deals/${id}`);
         setDeal(dealResponse.data);
 
+        // Fetch comments based on the dynamic id
         const commentsResponse = await axios.get<Comment[]>(`/api/comments?dealId=${id}`);
         setComments(commentsResponse.data);
       } catch (error) {
