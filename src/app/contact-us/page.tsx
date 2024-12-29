@@ -28,7 +28,7 @@ const ContactUs = () => {
       setEmailError('Invalid email format');
       isValid = false;
     } else {
-        setEmailError('');
+      setEmailError('');
     }
 
     if (message.trim() === '') {
@@ -41,7 +41,7 @@ const ContactUs = () => {
     return isValid;
   };
 
-  const handleSubmit = async (event: React.FormEvent) => { // Added React.FormEvent
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     if (!validateForm()) {
@@ -50,23 +50,21 @@ const ContactUs = () => {
     setSubmissionStatus('submitting');
 
     // Simulate form submission (replace with your API call)
-    try{
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        setSubmissionStatus('success');
-        // Clear the fields when submitted successfully
-        setName('');
-        setEmail('');
-        setMessage('');
-    } catch (error){
-        console.error("Error sending the form", error)
-        setSubmissionStatus('error');
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      setSubmissionStatus('success');
+      setName('');
+      setEmail('');
+      setMessage('');
+    } catch (error) {
+      console.error('Error sending the form', error);
+      setSubmissionStatus('error');
     }
   };
 
-
   return (
     <>
-       <Head>
+      <Head>
         <title>Contact Us | Crisp & Crunch</title>
       </Head>
       <section className="bg-yellow-100 py-16 px-6">
@@ -75,10 +73,13 @@ const ContactUs = () => {
             Contact Us
           </h1>
           <p className="text-center mb-6 text-gray-700">
-          Have a question or feedback? We'd love to hear from you!
+            Have a question or feedback? We&apos;d love to hear from you!
           </p>
 
-          <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+          <form
+            onSubmit={handleSubmit}
+            className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+          >
             <div className="mb-4">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
@@ -103,14 +104,14 @@ const ContactUs = () => {
 
             <div className="mb-4">
               <label
-                className="block text-yellow-700 text-sm font-bold mb-2"
+                className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="email"
               >
                 Your Email
               </label>
               <input
                 className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
-                    emailError ? 'border-red-500' : ''
+                  emailError ? 'border-red-500' : ''
                 }`}
                 id="email"
                 type="email"
@@ -118,9 +119,9 @@ const ContactUs = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-                 {emailError && (
-                  <p className="text-red-500 text-xs italic mt-1">{emailError}</p>
-                )}
+              {emailError && (
+                <p className="text-red-500 text-xs italic mt-1">{emailError}</p>
+              )}
             </div>
 
             <div className="mb-6">
@@ -132,16 +133,18 @@ const ContactUs = () => {
               </label>
               <textarea
                 className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
-                    messageError ? 'border-red-500' : ''
+                  messageError ? 'border-red-500' : ''
                 }`}
                 id="message"
-                rows="5"
+                rows={5}
                 placeholder="Your Message"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
               />
               {messageError && (
-                <p className="text-red-500 text-xs italic mt-1">{messageError}</p>
+                <p className="text-red-500 text-xs italic mt-1">
+                  {messageError}
+                </p>
               )}
             </div>
 
@@ -153,15 +156,20 @@ const ContactUs = () => {
                 Submit
               </button>
             </div>
-               {submissionStatus === 'submitting' && (
-                <p className="mt-4 text-center text-gray-600">Submitting...</p>
-                )}
-            {submissionStatus === 'success' && (
-                <p className="mt-4 text-center text-green-600">Message sent successfully!</p>
+
+            {submissionStatus === 'submitting' && (
+              <p className="mt-4 text-center text-gray-600">Submitting...</p>
             )}
-           {submissionStatus === 'error' && (
-            <p className="mt-4 text-center text-red-600">Oops! something went wrong please try again later</p>
-           )}
+            {submissionStatus === 'success' && (
+              <p className="mt-4 text-center text-green-600">
+                Message sent successfully!
+              </p>
+            )}
+            {submissionStatus === 'error' && (
+              <p className="mt-4 text-center text-red-600">
+                Oops! Something went wrong. Please try again later.
+              </p>
+            )}
           </form>
         </div>
       </section>
