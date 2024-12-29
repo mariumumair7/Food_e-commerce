@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
 
 interface Comment {
@@ -24,12 +24,13 @@ export default function DealDetail() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionMessage, setSubmissionMessage] = useState('');
-  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const { id } = router.query;
+  // Get the 'id' from the query params
+  const id = searchParams.get('id');
 
   useEffect(() => {
-    if (!id) return; 
+    if (!id) return;
 
     const fetchData = async () => {
       if (typeof id === 'string') {
