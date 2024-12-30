@@ -1,23 +1,23 @@
-import { Inter, Roboto_Mono } from "next/font/google"; // Replace with your desired fonts
-import "./globals.css"; // Ensure global styles are imported
-import Header from "./components/header"; // Adjust the path as needed
-import Footer from "./components/footer"; // Adjust the path as needed
-import { CartProvider } from "./lib/cart-context"; // Adjust the path as needed
+import { Inter, Roboto_Mono } from "next/font/google"; // Font imports
+import "./globals.css"; // Global styles
+import Header from "./components/header"; // Header component
+import Footer from "./components/footer"; // Footer component
+import { CartProvider } from "./lib/cart-context"; // Cart provider for context
 
-// Import fonts
+// Import fonts from Google Fonts
 const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
+  variable: "--font-inter", // Define a CSS variable for the font
+  subsets: ["latin"], // Choose the subset for performance
 });
 
 const robotoMono = Roboto_Mono({
-  variable: "--font-roboto-mono",
-  subsets: ["latin"],
+  variable: "--font-roboto-mono", // Define a CSS variable for the font
+  subsets: ["latin"], // Choose the subset for performance
 });
 
 export const metadata = {
-  title: "Food Blog | Fast Food Deals",
-  description: "Discover the best fast food deals and share your food journey.",
+  title: "Food Blog | Fast Food Deals", // Title for the page
+  description: "Discover the best fast food deals and share your food journey.", // Description for SEO
 };
 
 export default function RootLayout({
@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Metadata: These will complement the exported metadata */}
+        {/* Page Metadata */}
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" href="/favicon.ico" />
@@ -36,6 +36,7 @@ export default function RootLayout({
         <meta name="description" content={metadata.description} />
       </head>
       <body className={`${inter.variable} ${robotoMono.variable} antialiased bg-gray-100`}>
+        {/* Wrap app with CartContext */}
         <CartProvider>
           {/* Header section */}
           <header>

@@ -1,11 +1,11 @@
 
-"use client"; 
+'use client';
 
-import { useState } from "react";
-import Head from "next/head";
-import Link from "next/link";
-import Image from "next/image"; // Importing Next.js Image component
-import { useCart } from "../lib/cart-context"; // Importing the cart context
+import { useState } from 'react';
+import Head from 'next/head';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useCart } from '../lib/cart-context'; // Importing the cart context
 
 // Define the categories and food items
 const categories = ['All', 'Burgers', 'Pizzas', 'Fries', 'Chicken Wings', 'Pasta', 'Garlic Bread'];

@@ -1,19 +1,20 @@
-'use client';
+// CartPage.tsx
+"use client"; 
 
-import { useCart } from "../lib/cart-context";
-import Link from "next/link";
+import { useCart } from "../lib/cart-context"; 
+import Link from "next/link"; 
 import Image from "next/image";
 
 export default function CartPage() {
   const { cart, removeFromCart } = useCart();
 
-  // Calculate the total price
+  // Calculate total price
   const totalPrice = cart.reduce((total, item) => total + item.price, 0);
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg">
-        <h1 className="text-5xl font-bold text-center text-gray-800 py-6">Your Cart</h1>
+    <div className="min-h-screen bg-gray-100 py-8">
+      <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg">
+        <h1 className="text-4xl font-bold text-center text-gray-800 py-6">Your Cart</h1>
 
         {/* If the cart is empty */}
         {cart.length === 0 ? (
@@ -49,7 +50,7 @@ export default function CartPage() {
                   {/* Remove Item Button */}
                   <button
                     onClick={() => removeFromCart(item.id)}
-                    className="text-red-500 hover:text-red-700"
+                    className="text-red-500 hover:text-red-700 transition duration-200 ease-in-out"
                   >
                     Remove
                   </button>

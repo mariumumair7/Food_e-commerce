@@ -1,17 +1,16 @@
 import Link from 'next/link';
-import Image from 'next/image';  // Import Image from next/image
-import { GetStaticProps } from 'next';
+import Image from 'next/image'; // Import Image from next/image
 
 interface Post {
-    id: string;
-    title: string;
-    slug: string;
-    content: string;
-    image: string;
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
+  image: string;
 }
 
 interface Props {
-    posts: Post[];
+  posts: Post[];
 }
 
 const BlogList = ({ posts }: Props) => {
@@ -32,10 +31,10 @@ const BlogList = ({ posts }: Props) => {
                 <Link href={`/blog/${post.slug}`} className="block">
                   <div className="relative w-full h-60">
                     <Image
-                      src={post.image}  // Use Image instead of img
+                      src={post.image} // Ensure this is a valid path
                       alt={post.title}
-                      layout="fill"  // Ensures the image covers the div area
-                      objectFit="cover"  // Ensures the image maintains aspect ratio
+                      layout="fill" // Ensures the image covers the div area
+                      objectFit="cover" // Ensures the image maintains aspect ratio
                       className="rounded-t-lg"
                     />
                   </div>
@@ -44,7 +43,9 @@ const BlogList = ({ posts }: Props) => {
                       {post.title}
                     </h2>
                     <p className="text-gray-600 text-sm leading-relaxed">
-                      {post.content.substring(0, 120)}...
+                      {post.content.length > 120
+                        ? post.content.substring(0, 120) + '...'
+                        : post.content}
                     </p>
                   </div>
                 </Link>
@@ -57,22 +58,6 @@ const BlogList = ({ posts }: Props) => {
       </div>
     </div>
   );
-};
-
-// Fetching all blog posts for the listing page
-export const getStaticProps: GetStaticProps<Props> = async () => {
-  try {
-    const res = await fetch('http://localhost:3000/api/posts'); // Fetch from API
-    if (!res.ok) {
-      console.error(`Failed to fetch posts with status ${res.status}`);
-      return { props: { posts: [] } };
-    }
-    const posts = await res.json();
-    return { props: { posts } };
-  } catch (error) {
-    console.error('Error fetching posts:', error);
-    return { props: { posts: [] } };
-  }
 };
 
 export default BlogList;

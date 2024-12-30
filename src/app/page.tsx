@@ -5,11 +5,21 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Herosection from './components/herosection';
 import CommentSection from './components/commentSection';
-import BlogList from "../app/blog/index"
+import BlogList from '../app/blog/index';
 import { useCart } from './lib/cart-context';
 
+// Define the Deal Type
+interface Deal {
+    id: string;
+    title: string;
+    description: string;
+    price: number;
+    image: string;
+    slug: string;
+}
+
 // Deals data
-const deals = [
+const deals: Deal[] = [
     {
         id: '1',
         title: '20% off on all pizza',
@@ -36,12 +46,40 @@ const deals = [
     },
 ];
 
-export default function Home() {
-    const {addToCart } = useCart();
+// Define the Post Type
+interface Post {
+    id: string;
+    title: string;
+    slug: string;
+    content: string;
+    image: string;
+}
 
-    const handleAddToCart = (deal) => {
-        console.log("adding to cart from Home:", deal);
-      addToCart(deal);
+// Define Props for this page
+interface Props {
+    posts: Post[];
+}
+
+async function getPosts() {
+    const apiKey = process.env.MY_API_KEY; // Get API key from env
+    const res = await fetch('http://localhost:3000/api/posts', {
+        headers: {
+            'Authorization': `Bearer ${apiKey}`
+        }
+    });
+    if (!res.ok) {
+        console.error(`Failed to fetch posts with status ${res.status}`);
+        return { posts: [] };
+    }
+    return res.json();
+}
+
+async function Home() {
+  const posts = await getPosts();
+    const { addToCart } = useCart();
+
+    const handleAddToCart = (deal: Deal) => {
+        addToCart(deal);
     };
 
     return (
@@ -54,47 +92,56 @@ export default function Home() {
             <Herosection />
 
             <section className="px-6 py-8 bg-gray-50">
-                <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">Special Deals</h1>
+                <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">
+                    Special Deals
+                </h1>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     {deals.map((deal) => (
                         <div
                             key={deal.id}
                             className="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 transform hover:scale-105"
                         >
-                           <div className="relative">
+                            <div className="relative">
                                 <Image
-                                   src={deal.image}
+                                    src={deal.image}
                                     alt={deal.title}
-                                   width={600}
-                                   height={400}
-                                   className="w-full h-72 object-cover rounded-t-lg"
-                               />
-                              <div className="absolute top-2 left-2 bg-pink-500 text-white px-4 py-2 rounded-full text-lg">
-                                  Rs. {deal.price}
-                               </div>
+                                    width={600}
+                                    height={400}
+                                    className="w-full h-72 object-cover rounded-t-lg"
+                                />
+                                <div className="absolute top-2 left-2 bg-pink-500 text-white px-4 py-2 rounded-full text-lg">
+                                    Rs. {deal.price}
+                                </div>
                             </div>
                             <div className="p-6">
-                              <h2 className="text-2xl font-semibold text-gray-800">{deal.title}</h2>
-                              <p className="text-gray-600 mt-2">{deal.description}</p>
-                          </div>
-
-                           <div className="p-4 bg-gray-100 flex justify-between items-center rounded-b-lg">
+                                <h2 className="text-2xl font-semibold text-gray-800">
+                                    {deal.title}
+                                </h2>
+                                <p className="text-gray-600 mt-2">{deal.description}</p>
+                            </div>
+                            <div className="p-4 bg-gray-100 flex justify-between items-center rounded-b-lg">
                                 <button
-                                  onClick={() => handleAddToCart(deal)}
-                                   className="bg-pink-400 text-black text-lg px-4 py-2 rounded-md hover:bg-pink-500 transition-colors"
-                               >
-                                   Add to Cart
-                               </button>
-                               <Link href={`/deal/${deal.id}`} className="text-purple-500 text-lg hover:underline">
+                                    onClick={() => handleAddToCart(deal)}
+                                    className="bg-pink-400 text-black text-lg px-4 py-2 rounded-md hover:bg-pink-500 transition-colors"
+                                >
+                                    Add to Cart
+                                </button>
+                                <Link
+                                    href={`/deal/${deal.id}`}
+                                    className="text-purple-500 text-lg hover:underline"
+                                >
                                     View Deal
-                               </Link>
-                           </div>
-                     </div>
-                 ))}
+                                </Link>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </section>
-            <CommentSection postId={"1"}   />
-            <BlogList /> 
-      </>
+
+            <CommentSection postId="1" />
+            <BlogList posts={posts} />
+        </>
     );
 }
+
+export default Home;
