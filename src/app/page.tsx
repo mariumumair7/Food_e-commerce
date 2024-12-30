@@ -6,14 +6,14 @@ import Herosection from './components/herosection';
 import CommentSection from './components/commentSection';
 import BlogList from '../app/blog/index';
 import { useCart } from './lib/cart-context';
-import { Deal, Post } from './types/product';
-import React, {useEffect, useState} from 'react';
-
-
+import { Deal, Post } from './types/product'; 
+import React from 'react';
 
 interface ClientComponentProps {
   posts: Post[]
 }
+
+import { use } from 'react';
 const ClientComponent: React.FC<ClientComponentProps> = ({ posts }) => {
     const { addToCart } = useCart();
 
@@ -97,13 +97,14 @@ const ClientComponent: React.FC<ClientComponentProps> = ({ posts }) => {
                     ))}
                 </div>
             </section>
-             <BlogList posts={posts} />
+            <BlogList posts={posts} />
         </>
     );
 };
 
+// Server component to fetch posts
 async function getPosts() {
-    const apiKey = process.env.MY_API_KEY; // Get API key from env
+    const apiKey = process.env.MY_API_KEY; 
     const res = await fetch('http://localhost:3000/api/posts', {
         headers: {
             'Authorization': `Bearer ${apiKey}`,
@@ -113,24 +114,13 @@ async function getPosts() {
         console.error(`Failed to fetch posts with status ${res.status}`);
         return { posts: [] };
     }
-    return res.json();
+     return res.json();
+
 }
 
-interface Props {
-  posts: Post[]
-}
-
-export default function Home() {
-  const [posts, setPosts] = useState<Post[]>([]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-          const data = await getPosts();
-         setPosts(data.posts);
-        }
-        fetchData();
-    }, [])
-
+// Default page component (server component)
+async function Home() {
+    const posts = await getPosts();
     return (
         <>
             <Head>
@@ -139,7 +129,9 @@ export default function Home() {
             </Head>
             <Herosection />
              <ClientComponent posts={posts} />
-            <CommentSection postId="1" />
+             <CommentSection postId="1" />
         </>
     );
 }
+
+export default Home;
