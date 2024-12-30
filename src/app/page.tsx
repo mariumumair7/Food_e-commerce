@@ -6,91 +6,51 @@ import Image from 'next/image';
 import Herosection from './components/herosection';
 import CommentSection from './components/commentSection';
 import BlogList from '../app/blog/index';
-import { useCart } from './lib/cart-context';
+import { Deal, Post } from './types/product'; 
+import React from 'react';
 
-// Define the Deal Type
-interface Deal {
-    id: string;
-    title: string;
-    description: string;
-    price: number;
-    image: string;
-    slug: string;
-}
-
-// Deals data
-const deals: Deal[] = [
-    {
-        id: '1',
-        title: '20% off on all pizza',
-        description: 'Get 50% off on all burgers this weekend.',
-        price: 300,
-        image: '/hero-image5.jpeg',
-        slug: 'pizza-deal',
-    },
-    {
-        id: '2',
-        title: 'Buy 1 Get 1 Free',
-        description: 'Buy one large fries / burger and get another free!',
-        price: 400,
-        image: '/hero-image2.jpeg',
-        slug: 'burger-deal',
-    },
-    {
-        id: '3',
-        title: 'Free Drink with Meal',
-        description: 'Get a free drink with any meal ordered today.',
-        price: 1000,
-        image: '/hero-image4.png',
-        slug: 'drink-deal',
-    },
-];
-
-// Define the Post Type
-interface Post {
-    id: string;
-    title: string;
-    slug: string;
-    content: string;
-    image: string;
-}
-
-// Define Props for this page
-interface Props {
+// create client component to handle add to cart
+interface ClientComponentProps {
     posts: Post[];
 }
 
-async function getPosts() {
-    const apiKey = process.env.MY_API_KEY; // Get API key from env
-    const res = await fetch('http://localhost:3000/api/posts', {
-        headers: {
-            'Authorization': `Bearer ${apiKey}`
-        }
-    });
-    if (!res.ok) {
-        console.error(`Failed to fetch posts with status ${res.status}`);
-        return { posts: [] };
-    }
-    return res.json();
-}
+import { useCart } from './lib/cart-context';
 
-async function Home() {
-  const posts = await getPosts();
+const ClientComponent: React.FC<ClientComponentProps> = ({ posts }) => {
     const { addToCart } = useCart();
-
     const handleAddToCart = (deal: Deal) => {
         addToCart(deal);
     };
 
+    const deals: Deal[] = [
+        {
+            id: '1',
+            title: '20% off on all pizza',
+            description: 'Get 50% off on all burgers this weekend.',
+            price: 300,
+            image: '/hero-image5.jpeg',
+            slug: 'pizza-deal',
+        },
+        {
+            id: '2',
+            title: 'Buy 1 Get 1 Free',
+            description: 'Buy one large fries / burger and get another free!',
+            price: 400,
+            image: '/hero-image2.jpeg',
+            slug: 'burger-deal',
+        },
+        {
+            id: '3',
+            title: 'Free Drink with Meal',
+            description: 'Get a free drink with any meal ordered today.',
+            price: 1000,
+            image: '/hero-image4.png',
+            slug: 'drink-deal',
+        },
+    ];
+
     return (
         <>
-            <Head>
-                <title>Fast Food Deals</title>
-                <meta name="description" content="Special deals for fast food lovers" />
-            </Head>
-
-            <Herosection />
-
             <section className="px-6 py-8 bg-gray-50">
                 <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">
                     Special Deals
@@ -109,7 +69,9 @@ async function Home() {
                                     height={400}
                                     className="w-full h-72 object-cover rounded-t-lg"
                                 />
-                                <div className="absolute top-2 left-2 bg-pink-500 text-white px-4 py-2 rounded-full text-lg">
+                                <div
+                                    className="absolute top-2 left-2 bg-pink-500 text-white px-4 py-2 rounded-full text-lg"
+                                >
                                     Rs. {deal.price}
                                 </div>
                             </div>
@@ -137,9 +99,37 @@ async function Home() {
                     ))}
                 </div>
             </section>
-
-            <CommentSection postId="1" />
             <BlogList posts={posts} />
+        </>
+    );
+};
+
+async function getPosts() {
+    const apiKey = process.env.MY_API_KEY; // Get API key from env
+    const res = await fetch('http://localhost:3000/api/posts', {
+        headers: {
+            'Authorization': `Bearer ${apiKey}`,
+        },
+    });
+    if (!res.ok) {
+        console.error(`Failed to fetch posts with status ${res.status}`);
+        return { posts: [] };
+    }
+    return res.json();
+}
+
+
+async function Home() {
+    const posts = await getPosts();
+    return (
+        <>
+            <Head>
+                <title>Fast Food Deals</title>
+                <meta name="description" content="Special deals for fast food lovers" />
+            </Head>
+            <Herosection />
+             <ClientComponent posts={posts} />
+             <CommentSection postId="1" />
         </>
     );
 }

@@ -1,8 +1,26 @@
 export interface ProductType {
-    id: string;
-    name: string;
-    price: number;
-    image: string;
-    description: string; // Add this line to include the description
-    category: string; // Add this line to include a category
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  image: string;
+  slug: string;
   }
+
+
+export interface Deal {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  image: string;
+  slug: string;
+}
+
+export interface Post {
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
+  image: string;
+}
