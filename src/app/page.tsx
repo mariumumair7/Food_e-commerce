@@ -1,27 +1,25 @@
 'use client';
-
 import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
 import Herosection from './components/herosection';
 import CommentSection from './components/commentSection';
 import BlogList from '../app/blog/index';
-import { Deal, Post } from './types/product'; 
-import React from 'react';
-
-// create client component to handle add to cart
-interface ClientComponentProps {
-    posts: Post[];
-}
-
 import { useCart } from './lib/cart-context';
+import { Deal, Post } from './types/product';
+import React, {useEffect, useState} from 'react';
 
+
+
+interface ClientComponentProps {
+  posts: Post[]
+}
 const ClientComponent: React.FC<ClientComponentProps> = ({ posts }) => {
     const { addToCart } = useCart();
+
     const handleAddToCart = (deal: Deal) => {
         addToCart(deal);
     };
-
     const deals: Deal[] = [
         {
             id: '1',
@@ -99,7 +97,7 @@ const ClientComponent: React.FC<ClientComponentProps> = ({ posts }) => {
                     ))}
                 </div>
             </section>
-            <BlogList posts={posts} />
+             <BlogList posts={posts} />
         </>
     );
 };
@@ -118,9 +116,21 @@ async function getPosts() {
     return res.json();
 }
 
+interface Props {
+  posts: Post[]
+}
 
-async function Home() {
-    const posts = await getPosts();
+export default function Home() {
+  const [posts, setPosts] = useState<Post[]>([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+          const data = await getPosts();
+         setPosts(data.posts);
+        }
+        fetchData();
+    }, [])
+
     return (
         <>
             <Head>
@@ -129,9 +139,7 @@ async function Home() {
             </Head>
             <Herosection />
              <ClientComponent posts={posts} />
-             <CommentSection postId="1" />
+            <CommentSection postId="1" />
         </>
     );
 }
-
-export default Home;

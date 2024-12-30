@@ -15,7 +15,7 @@ const Product: React.FC<Props> = ({ item }) => {
         return <div className="text-red-500">Product Unavailable</div>; // Show a message
     }
 
-    const { image, name, price } = item;
+    const { image, id, price } = item;
 
     const handleAddToCart = () => {
         addToCart(item);
@@ -26,14 +26,14 @@ const Product: React.FC<Props> = ({ item }) => {
             <div className="relative w-full h-64">
                 <Image
                    src={image}
-                  alt={name}
+                  alt={id}
                     layout="fill"
                   style={{objectFit: "cover"}}
                    className="rounded-t-lg"
                 />
             </div>
             <div className="p-6">
-                <h3 className="text-xl font-semibold text-gray-800">{name}</h3>
+                <h3 className="text-xl font-semibold text-gray-800">{id}</h3>
                 <p className="text-gray-600 mt-2">Rs. {price}</p>
                 <button
                    onClick={handleAddToCart}
