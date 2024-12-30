@@ -36,13 +36,13 @@ export default function CartPage() {
                   <div className="flex items-center space-x-4">
                     <Image
                       src={item.image}
-                      alt={item.name}
+                      alt={item.id}
                       width={64}
                       height={64}
                       className="object-cover rounded-md"
                     />
                     <div>
-                      <h2 className="text-xl font-semibold text-gray-800">{item.name}</h2>
+                      <h2 className="text-xl font-semibold text-gray-800">{item.id}</h2>
                       <p className="text-gray-500">Rs. {item.price}</p>
                     </div>
                   </div>
