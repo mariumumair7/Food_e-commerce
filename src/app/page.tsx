@@ -7,14 +7,34 @@ import CommentSection from './components/commentSection';
 import BlogList from '../app/blog/index';
 import { useCart } from './lib/cart-context';
 import { Deal, Post } from './types/product'; 
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+
 
 interface ClientComponentProps {
-  posts: Post[]
+    
 }
 
-import { use } from 'react';
-const ClientComponent: React.FC<ClientComponentProps> = ({ posts }) => {
+const ClientComponent: React.FC<ClientComponentProps> = () => {
+   const [posts, setPosts] = useState<Post[]>([])
+
+      useEffect(() => {
+        const fetchData = async () => {
+            const apiKey = process.env.MY_API_KEY;
+            const res = await fetch('http://localhost:3000/api/posts', {
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                },
+            });
+            if (!res.ok) {
+                console.error(`Failed to fetch posts with status ${res.status}`);
+                return;
+            }
+             const data = await res.json();
+             setPosts(data.posts)
+        }
+        fetchData();
+    }, []);
+
     const { addToCart } = useCart();
 
     const handleAddToCart = (deal: Deal) => {
@@ -97,41 +117,24 @@ const ClientComponent: React.FC<ClientComponentProps> = ({ posts }) => {
                     ))}
                 </div>
             </section>
-            <BlogList posts={posts} />
+           <BlogList posts={posts} />
         </>
     );
 };
 
-// Server component to fetch posts
-async function getPosts() {
-    const apiKey = process.env.MY_API_KEY; 
-    const res = await fetch('http://localhost:3000/api/posts', {
-        headers: {
-            'Authorization': `Bearer ${apiKey}`,
-        },
-    });
-    if (!res.ok) {
-        console.error(`Failed to fetch posts with status ${res.status}`);
-        return { posts: [] };
-    }
-     return res.json();
+function Home() {
 
-}
-
-// Default page component (server component)
-async function Home() {
-    const posts = await getPosts();
-    return (
-        <>
-            <Head>
-                <title>Fast Food Deals</title>
-                <meta name="description" content="Special deals for fast food lovers" />
-            </Head>
-            <Herosection />
-             <ClientComponent posts={posts} />
-             <CommentSection postId="1" />
-        </>
-    );
+  return (
+    <>
+      <Head>
+        <title>Fast Food Deals</title>
+        <meta name="description" content="Special deals for fast food lovers" />
+      </Head>
+      <Herosection />
+       <ClientComponent  />
+      <CommentSection postId="1" />
+    </>
+  );
 }
 
 export default Home;
