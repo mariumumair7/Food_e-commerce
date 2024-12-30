@@ -6,18 +6,18 @@ import Herosection from './components/herosection';
 import CommentSection from './components/commentSection';
 import BlogList from '../app/blog/index';
 import { useCart } from './lib/cart-context';
-import { Deal, Post } from './types/product'; 
+import { Deal, Post } from './types/product'; // Import types from the types folder
 import React, {useState, useEffect} from 'react';
 
 
 interface ClientComponentProps {
-    
+  posts?: Post[]
 }
 
-const ClientComponent: React.FC<ClientComponentProps> = () => {
-   const [posts, setPosts] = useState<Post[]>([])
 
-      useEffect(() => {
+const ClientComponent: React.FC<ClientComponentProps> = () => {
+    const [posts, setPosts] = useState<Post[]>([])
+    useEffect(() => {
         const fetchData = async () => {
             const apiKey = process.env.MY_API_KEY;
             const res = await fetch('http://localhost:3000/api/posts', {
@@ -36,7 +36,6 @@ const ClientComponent: React.FC<ClientComponentProps> = () => {
     }, []);
 
     const { addToCart } = useCart();
-
     const handleAddToCart = (deal: Deal) => {
         addToCart(deal);
     };
@@ -117,12 +116,16 @@ const ClientComponent: React.FC<ClientComponentProps> = () => {
                     ))}
                 </div>
             </section>
-           <BlogList posts={posts} />
+             <BlogList posts={posts} />
         </>
     );
 };
 
+
+
+// Default page component (server component)
 function Home() {
+
 
   return (
     <>
